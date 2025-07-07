@@ -1,0 +1,15 @@
+1 Code Quality Checks
+----------------------
+Static Code Analysis: Use tools like sonar qube,pyLint,ESLint or Flake8 to analyse your code for syntax errors,unused variables and code smells.
+integrate thse tools with cicd pipeline.
+Eg. In python we can usew pyLint or Flake8 to check basic code quality.
+flake8 your_code.py
+pylint your_code.py
+
+Unit Testing: Ensure that unit tests are written for all critical components and run consistently diring the development process.
+tools :  pytest, unittest, Jest, etc.
+eg, pytest --maxfail=1 --disable-warnings -q
+Test Coverage: test code test coverage tool like coveralls,codecov etc.
+
+Build and Dependency Management:
+for eg, we can use virtual environment for applications like python virtual environment.
