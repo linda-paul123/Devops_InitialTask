@@ -36,9 +36,7 @@ Step-by-Step Guide:
 Step 1: Repository Structure
 Here’s a common structure for a software project:
 
-bash
-Copy
-Edit
+
 ├── .gitignore          # Files/folders to ignore in Git
 ├── Dockerfile           # Defines how to build Docker image
 ├── docker-compose.yml   # Docker Compose configuration (if multiple services)
@@ -88,24 +86,17 @@ Step 1: Add Credentials to Jenkins
 Go to Jenkins Dashboard and click on Manage Jenkins.
 
 Click on Manage Credentials. (If you're using a multi-tenant setup, select the appropriate domain for your credentials.)
-
 Click on (Global) under "Stores scoped to Jenkins", or choose a specific domain if required.
 
 Click Add Credentials.
-
 Choose the kind of credentials you want to add:
-
 Username with password: For username/password combinations (e.g., Git credentials).
-
 Secret text: For storing secret keys (e.g., API keys or tokens).
-
 SSH Username with private key: For SSH credentials.
-
 Certificate: For certificates.
-
 AWS Credentials: For AWS access keys.
 
-Enter the secret or credentials information (e.g., API keys, passwords), give them a unique ID, and save them.
+Enter the secret or credentials information (e.g., API keys, passwords), give them a unique ID, and save them
 
 Step 2: Use Credentials in Jenkins Pipeline
 Once you've added credentials to Jenkins, you can reference them in your Jenkinsfile or pipeline job configuration.
@@ -115,10 +106,6 @@ You can access these credentials in your Jenkins pipeline script using the crede
 
 Example of Using a Secret Text (API Key):
 If you've stored an API key as "MY_API_KEY", you can access it like this:
-
-groovy
-Copy
-Edit
 pipeline {
     agent any
     environment {
@@ -138,9 +125,6 @@ Here, the MY_API_KEY credential is retrieved from Jenkins and set as an environm
 Example of Using Username and Password:
 If you are using Username with Password (e.g., for Git authentication), you can use it like this:
 
-groovy
-Copy
-Edit
 pipeline {
     agent any
     environment {
