@@ -18,18 +18,13 @@ Go to EC2 and click Launch Instance.
 Review and launch the instance.
 Install Required Software:
 SSH into your EC2 instance using the public IP
-bash
-Copy
-Edit
+
 ssh -i "your-key.pem" ec2-user@your-ec2-ip
 Install necessary software for your staging environment (e.g., Node.js, Python, Nginx, etc.), depending on the application you’re deploying.
 
 Setup Deployment Tools:
 
 If you're using Docker, install Docker on the server:
-bash
-Copy
-Edit
 sudo apt-get update
 sudo apt-get install docker.io
 If you're using a CI/CD tool like Jenkins or GitLab CI, install and configure the server to interact with these tools.
@@ -49,9 +44,6 @@ Tag a stable release that you want to deploy to staging.
 If you're using Docker for containerization:
 Build your Docker image:
 
-bash
-Copy
-Edit
 docker build -t myapp:staging .
 Push the image to a Docker registry (e.g., Docker Hub or AWS ECR).
 
@@ -64,15 +56,8 @@ Choose a Backup Strategy: The backup strategy depends on the type of database (e
 
 For MySQL:
 
-bash
-Copy
-Edit
 mysqldump -u root -p your_database > backup.sql
 For PostgreSQL:
-
-bash
-Copy
-Edit
 pg_dump -U postgres your_database > backup.sql
 If you’re using AWS RDS for databases, RDS offers automated backups and manual snapshots.
 
@@ -80,9 +65,6 @@ Automate Backups:
 
 Set up a cron job (Linux) or scheduled task (Windows) to automatically back up the database periodically.
 
-bash
-Copy
-Edit
 crontab -e
 # Add a line to back up the database every day at midnight
 0 0 * * * mysqldump -u root -p your_database > /path/to/backups/backup_$(date +\%F).sql
@@ -91,33 +73,19 @@ Manual Backup:
 
 You can simply copy files to a backup location (e.g., external server, cloud storage):
 
-bash
-Copy
-Edit
 tar -czvf project_backup.tar.gz /path/to/project
 Automate File Backups:
 
 Set up a cron job to automate project file backups.
 
-bash
-Copy
-Edit
 crontab -e
 # Backup project files every night
 0 2 * * * tar -czvf /path/to/backups/project_backup_$(date +\%F).tar.gz /path/to/project
 Step 3: Backup to Cloud Storage
 For added reliability, you can back up your files to cloud storage (e.g., AWS S3, Google Cloud Storage, or
+
 #Example with AWS S3:
-
 Install the AWS CLI on your server and configure it with your credentials:
-
-bash
-Copy
-Edit
 aws configure
 Back up files to an S3 bucket:
-
-bash
-Copy
-Edit
 aws s3 cp /path/to/project s3://your-backup-bucket/ --recursive
