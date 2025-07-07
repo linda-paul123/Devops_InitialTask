@@ -1,0 +1,215 @@
+Python Application (app.py)
+--------------------------
+# app.py
+from flask import Flask
+app = Flask(__name__)
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000
+
+Dockerfile for this python-ap
+------------------------------------
+
+Next, create a Dockerfile that will define how to build the Docker image.
+# Use an official Python runtime as a parent image
+FROM python:3.8-slim
+# Set the working directory in the container
+WORKDIR /app
+# Copy the current directory contents into the container at /app
+COPY . /app
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+# Expose the port the app runs on
+EXPOSE 5000
+# Define the command to run the app
+CMD ["python", "app.py"]
+
+Create a requirements.txt to specify the Python dependencies for the application.
+-------------------------------------------------------------------------------
+Flask==2.0.1
+
+Build and Run the Docker Container
+----------------------------------------
+To build and run the Docker container locally, use the following commands
+# Build the Docker image
+docker build -t python-flask-app .
+
+# Run the Docker container
+docker run -p 5000:5000 python-flask-app
+
+Git Directory Structure
+-------------------------------------
+A proper Git directory structure is essential for managing the source code and collaboration. Here’s a basic structure for your Python project.
+/my-python-app
+  ├── Dockerfile
+  ├── app.py
+  ├── requirements.txt
+  ├── .gitignore
+  ├── README.md
+  ├── .dockerignore
+  ├── jenkins/
+  │    └── Jenkinsfile
+  └── scripts/
+       └── deploy.sh
+# Dockerfile: Contains the Docker setup.
+# .py: The main Python application.
+# requirements.txt: Specifies Python dependencies.
+# .gitignore: Specifies which files and directories Git should ignore (e.g., .env, *.pyc files).
+# Jenkinsfile: This is the CI pipeline configuration for Jenkins.
+# scripts/deploy.sh: A script for automated deployment.
+
+Deployment Environment Creation on AWS
+---------------------------------------
+To deploy your Python app to AWS, we'll use Amazon EC2 and Elastic Load Balancer (ELB). We'll automate the creation of the EC2 instance using Terraform and deploy the Dockerized app to the EC2 instance.
+
+# configure AWS credentials
+  aws configure (command to configure AWS CLI)
+# create an ec2 instance using Terraform
+
+main.tf
+--------
+provider "aws" {
+  region = "us-west-2"
+}
+
+resource "aws_instance" "myapp_instance" {
+  ami = "ami-0c55b159cbfafe1f0"  # Ubuntu AMI ID (check for your region)
+  instance_type = "t2.micro"
+  key_name = "my-key-pair"
+
+  tags = {
+    Name = "my-python-app-instance"
+  }
+
+  user_data = <<-EOF
+              #!/bin/bash
+              sudo apt update -y
+              sudo apt install -y docker.io
+              sudo systemctl enable docker
+              sudo systemctl start docker
+              sudo docker run -d -p 5000:5000 python-flask-app
+              EOF
+}
+
+output "instance_ip" {
+  value = aws_instance.myapp_instance.public_ip
+}
+
+In this configuration,
+We are creating an EC2 instance with Ubuntu, installing Docker, and running the Flask app using Docker.
+The user_data script installs Docker and runs the Python app container on port 5000.
+
+To apply this configuration,
+terraform init
+terraform apply
+This will create the EC2 instance. Once it's done, you’ll see the public IP in the output
+
+# Access the Application
+Access the application by opening the public IP of your EC2 instance in your browser.
+
+CI Process Using Jenkins
+--------------------------------
+Next,set up the CI pipeline using Jenkins to automate the build, test, and deployment process.
+
+Jenkinsfile
+pipeline {
+    agent any
+    environment {
+        DOCKER_IMAGE = "python-flask-app"
+        DOCKER_REGISTRY = "yourdockerhubusername"
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/yourusername/my-python-app.git'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("$DOCKER_REGISTRY/$DOCKER_IMAGE")
+                }
+            }
+        }
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('', 'dockerhub-credentials') {
+                        docker.image("$DOCKER_REGISTRY/$DOCKER_IMAGE").push("latest")
+                    }
+                }
+            }
+        }
+        stage('Deploy to EC2') {
+            steps {
+                script {
+                    sh './scripts/deploy.sh'
+                }
+            }
+        }
+    }
+}
+
+In the Jenkinsfile,
+* The pipeline ckecksout the code from the github.
+* It buils the Docker image and push to the dockerhub.
+* Finally it deploys the application to the Ec2 instance using a script(deploy.sh)
+
+#Jenkins Configuration
+--------------------------------
+* Install Docker plugins and jenkins plugins on jenkins
+* create a new pipeline job and point it to your jenkinsfile
+
+Automated Deployment (Using deploy.sh)
+-------------------------------------------
+In this deploy.sh script we will SSH into the Ec2 instance and pull the new docker image to redeploy it.
+
+#!/bin/bash
+# SSH into EC2 instance and pull the latest image
+ssh -i /path/to/your/private-key.pem ubuntu@<EC2_PUBLIC_IP> << 'EOF'
+  sudo docker pull yourdockerhubusername/python-flask-app:latest
+  sudo docker stop $(sudo docker ps -q)  # Stop the currently running containers
+  sudo docker run -d -p 5000:5000 yourdockerhubusername/python-flask-app:latest
+EOF
+
+* give the permission to execute
+chmod +x scripts/deploy.sh
+
+Monitoring
+--------------------
+To monitor your application, use Prometheus and Grafana for metrics, or Datadog or CloudWatch for AWS-specific monitoring.
+
+Prometheus and Grafana
+Prometheus: Collects and stores metrics.
+
+Grafana: Visualizes metrics from Prometheus.
+
+Step 1: Install Prometheus and Grafana
+You can install Prometheus and Grafana using Docker.
+
+# Run Prometheus
+docker run -d -p 9090:9090 prom/prometheus
+
+# Run Grafana
+docker run -d -p 3000:3000 grafana/grafana
+
+Configure Metrics
+------------------------
+* You can use Flask Prometheus to expose application metrics.
+  pip install prometheus_flask_exporter
+ In your app.py, add this to expose metrics:
+* from prometheus_flask_exporter import PrometheusMetrics
+  metrics = PrometheusMetrics(app)
+  Prometheus will scrape metrics from http://<EC2_PUBLIC_IP>:5000/metrics.
+
+
+
+
+
+
+
+
+
+
