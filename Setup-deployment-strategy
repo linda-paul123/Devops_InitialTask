@@ -1,4 +1,6 @@
 Prepare for Deployment
+---------------------------------------------------------------------
+
 #prepare a staging environment or cloud provider
 A staging environment is a replica of your production environment that is used to test the code before deploying it live. Setting up a staging server or using a cloud provider for staging can help you ensure that the application works as expected in an environment similar to production.
 that can be any from the cloud provider eg,AWS,AZURE or GCP. I should prefre AWS.
