@@ -1,4 +1,7 @@
 # Devops_InitialTask
+This file includes the tasks that are allocated to me. 
+
+
 1. Setup the Basics:
 Make the development environment easy to run locally (possibly using Docker).
 Propose a Git repo structure and branch naming convention.
