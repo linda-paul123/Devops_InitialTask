@@ -1,0 +1,11 @@
+Docker image commands
+docker build -t <image-name>:<tag> .
+docker images - list images
+docker rmi <image-name>:<tag> - Remove an image
+docker tag <source-image> <target-image> - Tag an image
+docker push <image-name>:<tag> - Push an image to dockerhub
+docker pull <image-name>:<tag> - pull an image from dockerhub
+docker save -o <file-path>.tar <image-name>:<tag> - save an image to a tar file
+docker load -i <file-path>.tar - load an image from tar file
+
+
