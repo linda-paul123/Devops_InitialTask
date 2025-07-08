@@ -1,4 +1,5 @@
 Docker image commands
+---------------------------
 docker build -t <image-name>:<tag> .
 docker images - list images
 docker rmi <image-name>:<tag> - Remove an image
@@ -7,5 +8,68 @@ docker push <image-name>:<tag> - Push an image to dockerhub
 docker pull <image-name>:<tag> - pull an image from dockerhub
 docker save -o <file-path>.tar <image-name>:<tag> - save an image to a tar file
 docker load -i <file-path>.tar - load an image from tar file
+
+Docker container commands
+--------------------------------------
+docker run -d -p <host-port>:<container-port> <image-name>:<tag> - Run a container
+docker run -it <image-name> /bin/bash - Run a container in an iterative mode
+docker ps - List Running containers
+docker ps -a - List all containers(Including stopped containers)
+docker stop <container-id> - stop a Running container
+docker start <container-id> - start a stopped container
+docker restart <container-id> - restart a container
+docker rm <container-id> - Remove a stopped container
+docker logs <container-id> - view logs of a container
+docker attach <container-id> - Attach to a running container
+docker exec -it <container-id> <command> - Execute a command in a running container
+
+Docker Network commands
+-----------------------------------
+docker network ls - list networks
+docker network create <network-name> - create a network
+docker network connect <network-name> <container-id> - connect a container to a network
+docker network disconnect <network-name> <container-id> - disconnect a container from a network
+docker network inspect <network-name> -  inspect a network
+
+Docker volume commands
+------------------------------
+docker volume ls - list volumes
+docker volume create <volume-name> - create a volume
+docker volume inspect <volume-name> - inspect a volume
+docker volume rm <volume-name> - remove a volume
+
+Docker compose commands
+--------------------------
+docker-compose build - Build containers defined in docker-compose.yaml
+docker-compose up -d - strat a container(run in the background)
+docker-compose up - start containers(run in background)
+docker-compose down - stop containers
+docker-compose logs - view logs of containers
+docker-compose run <service-name> <command> - Run one-off commands
+docker-compose up --scale <service-name>=<number-of-instances> - Scale Services (e.g., scale web service to 3 instances)
+
+Docker system commands
+---------------------------
+docker --version - check docker version
+docker info - check docker info
+docker system prune - cleanup docker system
+docker image prune - clean up unused images
+docker container prune - clean up unused containers
+
+Docker container metrics
+---------------------------
+docker stats - Monitor container resource usage.
+This command shows real-time statistics for your containers like CPU usage, memory usage, network I/O, etc.
+
+Docker Security and User Commands
+---------------------------------------
+Check Docker Container Security Scanning:
+If you're using Docker Content Trust,
+export DOCKER_CONTENT_TRUST=1
+docker info - This will show the users currently available for managing Docker on the system.
+
+
+
+
 
 
