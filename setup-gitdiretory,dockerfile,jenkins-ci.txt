@@ -6,8 +6,7 @@ The objective here is to set up a Dockerized environment so that developers can 
 The Dockerfile defines how the application is built and run inside a container. Here's a simple template based on the assumption that your application is written in Python:
 Example Dockerfile
 dockerfile
-Copy
-Edit
+
 # Use an official Python runtime as a parent image
 FROM python:3.9
 
