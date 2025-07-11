@@ -1,0 +1,27 @@
+1. setup repo
+2. setup required servers(Jenkins,sonarqube,nexux,monitoring tools)
+3. cofigure tools
+4. create the piplines & create EKS cluster)
+5. Trigger the pipelne to deploy te Application
+6. Assign a cuso domain to the deployed application
+7. monitor the Application
+
+2.setup required serversjenkins,sonarqube,nexux,monitoring tools)
+--------------------------------------------------------------------
+After the code is push to te reote repo, we ave open ouraw account
+firstly goto seurity grups
+set inbond rules for pods,
+  ipvesion - ipv4
+  type - customtcp
+  proocol - tcp
+  port range-2000-11000
+  source -0.0.0.0/0
+
+
+ After security group is created , launch 2instances ,storage 20,one or sonarqube, 2nd for nexux.for nexux 4gb is enough, so w choose t2 medium.
+ create keypair.
+ selectscrity group,which we are just confgured.
+ then give launch instance.
+ named they SonarQube , nexux
+ launc another machine size t2large ,storage 25.
+ # then w need to install mobaXterm in oursystem , this will help us to keep our terminal connection is alive always.t is remote coputing tool.
