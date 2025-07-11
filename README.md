@@ -16,3 +16,4 @@ Plan and test a backup system for database and project files.
 Start a DevOps handbook to document the setup and processes.
 Propose a basic plan for monitoring and alerting.
 Share any tools or ideas you think can improve stability, automation or speed.
+
