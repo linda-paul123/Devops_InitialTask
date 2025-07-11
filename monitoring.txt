@@ -1,0 +1,44 @@
+1. Set Up Monitoring on Your Local Server (Backend + MySQL)
+A. Backend Application Monitoring
+For the backend (FastAPI), you’ll want to monitor:
+
+API request rate (requests per second)
+
+Response time (latency)
+
+Error rate (500 errors, exceptions)
+
+Tools for Monitoring Backend:
+Prometheus + Grafana: Use Prometheus to collect metrics from your backend application and Grafana to visualize the data.
+
+Uptime Kuma: Simple and self-hosted monitoring for your backend uptime.
+
+1.Install Prometheus & Grafana on Local Server:
+Install Prometheus:
+Download and install Prometheus on your local server.
+
+Configure Prometheus to scrape data from your backend's metrics endpoint (FastAPI exposes metrics with /metrics endpoint).
+2.Install Grafana:
+
+Install Grafana and connect it to Prometheus as a data source.
+
+Create dashboards for API performance metrics and system health.
+3.FastAPI Metrics (Example using prometheus_fastapi_instrumentator)
+
+from prometheus_fastapi_instrumentator import Instrumentator
+
+instrumentator = Instrumentator()
+app = FastAPI()
+instrumentator.instrument(app).expose(app)
+4.set-up Alert:Use Alertmanager (integrated with Prometheus) to set up alerts if API errors spike or response time exceeds the threshold.
+B. MySQL Database Monitoring
+For MySQL, want to monitor,
+Query performance: slow queries, total queries executed.
+
+Connection status: number of active connections, replication health.
+
+System health: CPU usage, disk space usage, and memory consumption.
+Tools for monitoring MySQL
+Percona Monitoring and Management (PMM): Provides detailed insights into MySQL performance.
+
+MySQL Enterprise Monitor: Enterprise solution for deep MySQL performance monitoring.
